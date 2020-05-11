@@ -13,6 +13,7 @@ public class Main {
         isNegative(14);
         System.out.println(isNegative(-14));
         hello("Максим");
+        year(400);
     }
 
     static void variables(){
@@ -59,5 +60,17 @@ public class Main {
 
     static void hello(String name){
         System.out.println("Привет, " + name + "!");
+    }
+
+    static void year(int a){
+        if ((a % 4 == 0) && (a % 100 != 0)){
+            System.out.println(a + "год - это високосный год!");
+        }
+        else if (a % 400 == 0){
+            System.out.println(a + "год - это високосный год!");
+        }
+        else {
+            System.out.println(a + "год - это не високосный год!");
+        }
     }
 }
