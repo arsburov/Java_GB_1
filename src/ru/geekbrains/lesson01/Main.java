@@ -16,7 +16,7 @@ public class Main {
         year(400);
     }
 
-    static void variables(){
+    static void variables() {
         byte myByte = 0;
         short myShort = 30000;
         int myInt = 2147483647;
@@ -27,49 +27,44 @@ public class Main {
         boolean myBoolean = true;
     }
 
-    static float count(float a, float b, float c, float d){
+    static float count(float a, float b, float c, float d) {
         return a * (b + (c / d));
     }
 
-    static boolean trueOrNot(int a, int b){
+    static boolean trueOrNot(int a, int b) {
         if ((a + b) > 10 && (a + b) <= 20) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
-    static void positiveOrNot(int a){
-        if (a >= 0){
+    static void positiveOrNot(int a) {
+        if (a >= 0) {
             System.out.println("Введенное число положительное.");
-        }
-        else {
+        } else {
             System.out.println("Введенное число отрицательное.");
         }
     }
 
-    static boolean isNegative(int a){
-        if (a < 0){
+    static boolean isNegative(int a) {
+        if (a < 0) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
-    static void hello(String name){
+    static void hello(String name) {
         System.out.println("Привет, " + name + "!");
     }
 
-    static void year(int a){
-        if ((a % 4 == 0) && (a % 100 != 0)){
+    static void year(int a) {
+        if ((a % 4 == 0) && (a % 100 != 0)) {
             System.out.println(a + "год - это високосный год!");
-        }
-        else if (a % 400 == 0){
+        } else if (a % 400 == 0) {
             System.out.println(a + "год - это високосный год!");
-        }
-        else {
+        } else {
             System.out.println(a + "год - это не високосный год!");
         }
     }
