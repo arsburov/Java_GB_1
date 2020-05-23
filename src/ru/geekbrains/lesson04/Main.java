@@ -6,11 +6,11 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-	    playTicTacToe();
+        playTicTacToe();
     }
 
-    static void playTicTacToe(){
-        char[][] field = getField(3,3);
+    static void playTicTacToe() {
+        char[][] field = getField(3, 3);
         drawField(field);
 
         char playerSign = 'X';
@@ -20,16 +20,16 @@ public class Main {
 
         boolean isWin;
         boolean isDraw;
-        do{
+        do {
             move(field, currentPlayerSign);
             isWin = checkWin(field, currentPlayerSign);
             isDraw = checkDraw(field);
 
-            if (!isWin){
+            if (!isWin) {
                 currentPlayerSign = currentPlayerSign == playerSign ? computerSign : playerSign;
                 currentPlayerName = currentPlayerSign == playerSign ? "John" : "computer";
                 drawField(field);
-                if (isDraw){
+                if (isDraw) {
                     System.out.println("This is DRAW!!!");
                     drawField(field);
                     return;
@@ -40,7 +40,7 @@ public class Main {
         drawField(field);
     }
 
-    static char[][] getField(int x, int y){
+    static char[][] getField(int x, int y) {
         char[][] field = new char[x][y];
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
@@ -50,7 +50,7 @@ public class Main {
         return field;
     }
 
-    static void drawField(char[][] field){
+    static void drawField(char[][] field) {
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field.length; j++) {
                 System.out.print(field[i][j]);
@@ -59,15 +59,15 @@ public class Main {
         }
     }
 
-    static void move(char[][] field, char currentPlayerSign){
-        if (currentPlayerSign == 'X'){
+    static void move(char[][] field, char currentPlayerSign) {
+        if (currentPlayerSign == 'X') {
             playerMove(field, currentPlayerSign);
-        } else{
+        } else {
             computerMove(field, currentPlayerSign);
         }
     }
 
-    static void playerMove(char[][] field, char playerSign){
+    static void playerMove(char[][] field, char playerSign) {
         int x;
         int y;
 
@@ -93,13 +93,115 @@ public class Main {
 
     }
 
-    static void notifyOccupiedCoordinates(boolean isEmptyCell, int x, int y){
-        if (!isEmptyCell){
+    static void notifyOccupiedCoordinates(boolean isEmptyCell, int x, int y) {
+        if (!isEmptyCell) {
             System.out.println(String.format("Input coordinates are not valid. Cell of %s, %s is already occupied. Please input correct.", x, y));
         }
     }
 
-    static void computerMove(char[][] field, char currentPlayerSign){
+    static void computerMove(char[][] field, char currentPlayerSign) {
+        int x = -1;
+        int y = -1;
+        boolean computerWin = false;
+        boolean playerWin = false;
+        Random random = new Random();
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field.length; j++) {
+                if (isCellEmpty(field, i, j)) {
+                    field[i][j] = currentPlayerSign;
+                    if (checkWin(field, currentPlayerSign)) {
+                        x = i;
+                        y = j;
+                        computerWin = true;
+                    }
+                    field[i][j] = '-';
+                }
+            }
+
+        }
+        if (!computerWin) {
+            for (int j = 0; j < field.length; j++) {
+                for (int k = 0; k < field.length; k++) {
+                    if (isCellEmpty(field, j, k)) {
+                        field[j][k] = 'X';
+                        if (checkWin(field, 'X')) {
+                            x = j;
+                            y = k;
+                            playerWin = true;
+                        }
+                        field[j][k] = '-';
+                    }
+                }
+            }
+        }
+        if (!computerWin && !playerWin) {
+            do {
+                x = random.nextInt(3);
+                y = random.nextInt(3);
+            } while (!isCellEmpty(field, x, y));
+        }
+        System.out.println("Computer`s move...");
+        System.out.println(String.format("Computer chooses %s, %s coordinates", x + 1, y + 1));
+        field[x][y] = currentPlayerSign;
+    }
+
+
+    static boolean checkValid(int x, int y) {
+        return (x >= 0 && x <= 2) && (y <= 2 && y >= 0);
+    }
+
+    static void notifyNotValidCoordinates(boolean isValidCoordinates) {
+        if (!isValidCoordinates) {
+            System.out.println("Input coordinates are not valid. Valid range of coordinates - (1, 2, 3).");
+        }
+    }
+
+    static boolean isCellEmpty(char[][] field, int x, int y) {
+        return field[x][y] == '-';
+    }
+
+    static boolean checkWin(char[][] field, char currentPlayerSign) {
+        if (checkHorizontalWin(field, currentPlayerSign)) {
+            return true;
+        }
+        if (checkVerticalWin(field, currentPlayerSign)) {
+            return true;
+        }
+        if (checkDiagonalWin(field, currentPlayerSign)) {
+            return true;
+        }
+        return false;
+    }
+
+    static boolean checkHorizontalWin(char[][] field, char currentPlayerSign) {
+        for (int i = 0; i < field.length; i++) {
+            if (field[i][0] == currentPlayerSign && field[i][1] == currentPlayerSign && field[i][2] == currentPlayerSign) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static boolean checkVerticalWin(char[][] field, char currentPlayerSign) {
+        for (int i = 0; i < field.length; i++) {
+            if (field[0][i] == currentPlayerSign && field[1][i] == currentPlayerSign && field[2][i] == currentPlayerSign) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static boolean checkDiagonalWin(char[][] field, char currentPlayerSign) {
+        if (field[0][0] == currentPlayerSign && field[1][1] == currentPlayerSign && field[2][2] == currentPlayerSign) {
+            return true;
+        } else if (field[0][2] == currentPlayerSign && field[1][1] == currentPlayerSign && field[2][0] == currentPlayerSign) {
+            return true;
+        }
+        return false;
+    }
+
+
+    static void computerRandomMove(char[][] field, char currentPlayerSign) {
         int x;
         int y;
 
@@ -114,81 +216,10 @@ public class Main {
         field[x][y] = currentPlayerSign;
     }
 
-
-    static boolean checkValid(int x, int y){
-        return (x >= 0 && x <= 2) && (y <= 2 && y >= 0);
-    }
-
-    static void notifyNotValidCoordinates(boolean isValidCoordinates){
-        if (!isValidCoordinates){
-            System.out.println("Input coordinates are not valid. Valid range of coordinates - (1, 2, 3).");
-        }
-    }
-
-    static boolean isCellEmpty(char[][] field, int x, int y){
-        return field[x][y] == '-';
-    }
-
-    static boolean checkWin(char[][] field, char currentPlayerSign){
-        if (checkHorizontalWin(field,currentPlayerSign)) {
-            return true;
-        }
-        if (checkVerticalWin(field,currentPlayerSign)) {
-            return true;
-        }
-        if (checkDiagonalWin(field,currentPlayerSign)) {
-            return true;
-        }
-        return false;
-    }
-
-    static boolean checkHorizontalWin(char[][] field, char currentPlayerSign){
-        for (int i = 0; i < field.length; i++) {
-            if (field[i][0] == currentPlayerSign && field[i][1] == currentPlayerSign && field[i][2] == currentPlayerSign){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    static boolean checkVerticalWin(char[][] field, char currentPlayerSign){
-        for (int i = 0; i < field.length; i++) {
-            if (field[0][i] == currentPlayerSign && field[1][i] == currentPlayerSign && field[2][i] == currentPlayerSign){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    static boolean checkDiagonalWin(char[][] field, char currentPlayerSign){
-        if (field[0][0] == currentPlayerSign && field[1][1] == currentPlayerSign && field[2][2] == currentPlayerSign){
-            return true;
-        } else if (field[0][2] == currentPlayerSign && field[1][1] == currentPlayerSign && field[2][0] == currentPlayerSign){
-            return true;
-        }
-        return false;
-    }
-
-
-//    static void computerRandomMove(char[][] field, char currentPlayerSign){
-//        int x;
-//        int y;
-//
-//        Random random = new Random();
-//
-//        do {
-//            x = random.nextInt(3);
-//            y = random.nextInt(3);
-//        } while (!isCellEmpty(field, x, y));
-//        System.out.println("Computer`s move...");
-//        System.out.println(String.format("Computer chooses %s, %s coordinates", x, y));
-//        field[x][y] = currentPlayerSign;
-//    }
-
-    static boolean checkDraw(char[][] field){
+    static boolean checkDraw(char[][] field) {
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field.length; j++) {
-                if (field[i][j] == '-'){
+                if (field[i][j] == '-') {
                     return false;
                 }
             }
