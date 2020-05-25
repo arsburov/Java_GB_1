@@ -3,6 +3,10 @@ package ru.geekbrains.lesson05;
 public class Main {
 
     public static void main(String[] args) {
+        makeArrayAndPrintEmployeeInfo();
+    }
+
+    static void makeArrayAndPrintEmployeeInfo(){
         Employee[] employeesArray = new Employee[5];
 
         employeesArray[0] = new Employee("Petrov Ivan Ivanovich", "Head office", "petrov@google.com", "8-901-010-10-10", 300000, 32);
