@@ -17,10 +17,6 @@ public class Cat {
     }
 
     public void info(){
-        if(satiety){
-            System.out.println(String.format("%s satiety %b", name, satiety));
-        } else {
-            System.out.println(String.format("%s satiety %b", name, satiety));
-        }
+        System.out.println(String.format("%s satiety %b", name, satiety));
     }
 }
